@@ -25,7 +25,7 @@ public class GenerateTrecFile
 
     public static void main(String[] args)
     {
-        String solrUrl = "http://localhost:8983/solr/CORPUS2"; // URL de tu instancia de Solr
+        String solrUrl = "http://localhost:8983/solr/CORPUS2"; 
         HttpSolrClient solrClient = new HttpSolrClient.Builder(solrUrl).build();
 
         String cisiQueryFilePath = "src\\main\\java\\resources\\CISI.QRY";
@@ -68,21 +68,13 @@ public class GenerateTrecFile
     public static List<String> performSolrSearch(SolrClient solr, SolrQuery query)
             throws SolrServerException, IOException
     {
-        // Realiza la búsqueda en Solr y devuelve una lista de IDs de documentos relevantes
-        // Uso solr.query(query) para obtener los resultados y procesar la respuesta
-
-        // Ejemplo de cómo obtener los IDs de documentos de los resultados de búsqueda
+        // Realiza la búsqueda en Solr y devuelve una lista de documentos relevantes
         QueryResponse response = solr.query(query);
         SolrDocumentList results = response.getResults();
         List<String> relevantDocumentIds = new ArrayList<>();
         int ranking = 1;
         for (SolrDocument document : results)
         {
-            //relevantDocumentIds.add((String) document.getFieldValue("id"));
-            //String id = (String) document.getFieldValue("id");
-            //relevantDocumentIds.add(id);
-            //Float score = (Float) document.getFieldValue("score");
-            //relevantDocumentIds.add(score.toString());
             String trecLine = "QO" + " " + (String) document.getFieldValue("id") + " " + ranking + " " + document.getFieldValue("score").toString() + " " + "ETSI";
             relevantDocumentIds.add(trecLine);
             ranking++;
